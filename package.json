@@ -1,0 +1,19 @@
+{
+  "name": "micro-app-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bootstrap": "yarn install:main && yarn install:child-cra & yarn install:child-umi",
+    "install:main": "cd main && yarn",
+    "install:child-cra": "cd child-cra && yarn",
+    "install:child-umi": "cd child-umi && yarn",
+    "start-main": "cd main && yarn start",
+    "start-child:cra": "cd child-cra && yarn start",
+    "start-child:umi": "cd child-umi && yarn start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
