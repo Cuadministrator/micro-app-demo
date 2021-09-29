@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message, Input, Drawer } from 'antd';
-import React, { useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -102,6 +102,20 @@ const TableList: React.FC = () => {
    * @zh-CN 国际化配置
    * */
   const intl = useIntl();
+
+  const dataListener = useCallback(
+    (data) => console.warn('dataListener', data),
+    [],
+  )
+
+  useEffect(() => {
+    // @ts-ignore
+    window.microApp.addDataListener(dataListener)
+    return () => {
+      // @ts-ignore
+      window.microApp.removeDataListener(dataListener)
+    }
+  }, [])
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {

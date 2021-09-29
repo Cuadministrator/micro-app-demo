@@ -6,6 +6,8 @@ import {
   Link
 } from "react-router-dom";
 
+import microApp from '@micro-zoe/micro-app'
+
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
 //
@@ -16,6 +18,21 @@ import {
 // work properly.
 // @ts-ignore
 export default function BasicExample() {
+  const dataListener = React.useCallback(
+    (data) => console.warn('dataListener', data),
+    [],
+  )
+
+  React.useEffect(() => {
+    // @ts-ignore
+    console.warn('addDataListener', microApp)
+    // @ts-ignore
+    microApp.addDataListener('child-cra', dataListener)
+    return () => {
+      // @ts-ignore
+      microApp.removeDataListener(dataListener)
+    }
+  }, [dataListener])
   return (
     <Router>
       <div>
@@ -28,6 +45,13 @@ export default function BasicExample() {
           </li>
           <li>
             <Link to="/child-antd">antd child</Link>
+          </li>
+          <li>
+            <div
+              onClick={() => {
+                microApp.setData('child-cra', { type: '基座发送的数据' })
+              }}
+            >send message</div>
           </li>
         </ul>
 
@@ -70,7 +94,9 @@ function Home() {
 function AntdChild () {
   return (
     <div>
-      <h1>AntdChild</h1>
+      <h1>
+        AntdChild
+      </h1>
       <micro-app name='child-antd' url='http://localhost:8000/' baseurl='/child-antd'></micro-app>
     </div>
   )

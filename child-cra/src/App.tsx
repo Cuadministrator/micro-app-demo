@@ -19,6 +19,21 @@ console.log(window.__MICRO_APP_BASE_URL__);
 export default function BasicExample() {
   // @ts-ignore
   console.log(window.__MICRO_APP_BASE_URL__)
+  const dataListener = React.useCallback(
+    (data) => console.warn('dataListener', data),
+    [],
+  )
+
+  React.useEffect(() => {
+    // @ts-ignore
+    console.warn('addDataListener', window.microApp)
+    // @ts-ignore
+    window.microApp.addDataListener(dataListener)
+    return () => {
+      // @ts-ignore
+      window.microApp.removeDataListener(dataListener)
+    }
+  }, [dataListener])
   return (
     // @ts-ignore
     <Router basename={window.__MICRO_APP_BASE_URL__ || '/'}>
@@ -32,6 +47,14 @@ export default function BasicExample() {
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <div
+              onClick={() => {
+                // @ts-ignore
+                window.microApp?.dispatch({type: '子应用发送的数据'})
+              }}
+            >send message to main</div>
           </li>
         </ul>
 
@@ -66,7 +89,13 @@ export default function BasicExample() {
 function Home() {
   return (
     <div>
-      <h2>Home</h2>
+      <h2
+        onClick={() => {
+          // @ts-ignore
+          const a = window.microApp?.getData()
+          console.warn('a', a)
+        }}
+      >Home</h2>
     </div>
   );
 }

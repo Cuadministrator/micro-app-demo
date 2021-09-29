@@ -8,7 +8,7 @@ const baseUrl = 'http://localhost:8000'
 export async function currentUser(options?: { [key: string]: any }) {
   return request<{
     data: API.CurrentUser;
-  }>('/api/currentUser', {
+  }>(baseUrl + '/api/currentUser', {
     method: 'GET',
     ...(options || {}),
   });
@@ -28,7 +28,6 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
     },
     data: body,
     ...(options || {}),
