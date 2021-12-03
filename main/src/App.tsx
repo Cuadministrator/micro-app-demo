@@ -1,40 +1,46 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useMemo, useEffect, useCallback } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
-} from "react-router-dom";
+} from "react-router-dom"
 
 import microApp from '@micro-zoe/micro-app'
 
-import route from './page/Index'
+import routes from "./page/Index"
 
-const { Base } = route
+import useListener, { Plugin } from "./hook/listener"
+
+import { MicroAppConfig } from "./typings/global"
 
 export default function Plinth() {
-  const dataListener = useCallback(
-    (data) => console.warn('dataListener', data),
-    [],
-  )
+  const children: string[] = useMemo(() => {
+    const config: { [key: string]: MicroAppConfig } = routes.config
+    const keys = Object.getOwnPropertyNames(config)
+    return keys.map(key => config[key].name)
+  }, [])
+
+  const plugins: Plugin[] = []
+
+  const { init, clear } = useListener(children, plugins)
 
   useEffect(() => {
+    init()
     return () => {
+      clear()
       // 清空基座应用绑定的全局数据函数
       microApp.clearGlobalDataListener()
     }
-  }, [dataListener])
+  }, [init, clear])
+
   return (
     <Router>
       <div>
         <Switch>
-          <Route exact path="/" component={Base} />
-          <Route path="/child-cra">
-            <CRAChild />
-          </Route>
-          <Route path="/child-antd">
-            <AntdChild />
-          </Route>
+          <Route exact path="/" component={routes.route.Base} />
+          <Route path="/child-cra" component={CRAChild} />
+          <Route path="/child-antd" component={AntdChild} />
         </Switch>
       </div>
     </Router>

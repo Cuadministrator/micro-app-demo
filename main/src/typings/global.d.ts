@@ -14,4 +14,6 @@ type MicroApp = {
   disableSandbox?: boolean
 }
 
+type MicroAppConfig = Pick<MicroApp, 'name' | 'url' | 'baseurl'>
+
 type MicroAppProps = Omit<MicroApp, 'name' | 'url' | 'baseurl'>
