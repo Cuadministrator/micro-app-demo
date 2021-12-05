@@ -1,9 +1,9 @@
 import React from 'react'
 
 export const config = {
-  name: 'base',
-  url: 'http://localhost:3012/',
-  baseurl: '/base',
+  name: 'mp-list',
+  url: 'http://localhost:8000/',
+  baseurl: '/mp-list',
 }
 
 const Base = () => {

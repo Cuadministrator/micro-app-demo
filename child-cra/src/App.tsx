@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { Window } from "./typings/global";
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -16,6 +17,25 @@ import {
 // work properly.
 // @ts-ignore
 console.log(window.__MICRO_APP_BASE_URL__);
+
+const useListener = () => {
+  const dataListener = React.useCallback(
+    (data) => console.warn('dataListener', data),
+    [],
+  )
+  React.useEffect(() => {
+    const microWindow: Window = window
+    if (microWindow && microWindow.microApp) {
+      microWindow.microApp.addDataListener(dataListener)
+    }
+    return () => {
+      if (microWindow && microWindow.microApp) {
+        microWindow.microApp.removeDataListener(dataListener)
+      }
+    }
+  }, [dataListener])
+}
+
 export default function BasicExample() {
   // @ts-ignore
   console.log(window.__MICRO_APP_BASE_URL__)
@@ -52,7 +72,7 @@ export default function BasicExample() {
             <div
               onClick={() => {
                 // @ts-ignore
-                window.microApp?.dispatch({type: '子应用发送的数据'})
+                window.microApp?.dispatch({type: 'LOGIN'})
               }}
             >send message to main</div>
           </li>

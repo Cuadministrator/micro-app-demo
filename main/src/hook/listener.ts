@@ -1,26 +1,15 @@
 import { useCallback } from 'react'
 import microApp from '@micro-zoe/micro-app'
+import { BaseListener } from '../utils/baseListener'
 
-type dataType = {
-  type: string
-  value: Object
-}
-
-export type Plugin = (data: dataType) => void
-
-const doLogin: Plugin = (data) => {
-  if (data.type !== 'doLogin') return
-  window.location.href = '/base/login'
-}
-
-const useListener = (children: string[], plugins: Plugin[]) => {
+const useListener = (children: string[], listeners: BaseListener[]) => {
   const baseListener = useCallback(
     (data) => {
-      plugins.forEach(plugin => {
+      listeners.forEach(plugin => {
         plugin.apply(null, [data])
       })
     },
-    [plugins],
+    [listeners],
   )
 
   const init = useCallback(
@@ -37,6 +26,8 @@ const useListener = (children: string[], plugins: Plugin[]) => {
       children.forEach((child) => {
         microApp.clearDataListener(child)
       })
+      // 清空基座应用绑定的全局数据函数
+      microApp.clearGlobalDataListener()
     },
     [children],
   )
