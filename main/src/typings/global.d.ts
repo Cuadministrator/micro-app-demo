@@ -2,9 +2,10 @@ import { microWindowType } from '@micro-app/types'
 
 type Window = microWindowType
 
-type MicroApp = {
+type MicroAppProps = {
   name: string
   url: string
+  data?: Object
   macro?: boolean
   inline?: boolean
   destory?: boolean
@@ -14,6 +15,10 @@ type MicroApp = {
   disableSandbox?: boolean
 }
 
-type MicroAppConfig = Pick<MicroApp, 'name' | 'url' | 'baseurl'>
-
-type MicroAppProps = Omit<MicroApp, 'name' | 'url' | 'baseurl'>
+type LoginUser = {
+  name: string
+  observerId: number
+  employeeNo: string
+  departmentId: number | null
+  departmentName: string | null
+}

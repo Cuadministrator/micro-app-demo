@@ -1,37 +1,41 @@
-import { useEffect } from "react";
+import { useMemo, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom"
+} from 'react-router-dom'
+import microApp from '@micro-zoe/micro-app'
 
-import routes from "./page/Index"
+import MicroApp from './common/components/MicroApp/Index'
 
-import useChildren from './hook/children'
-import useListener from "./hook/listener"
-
-import listeners from './utils/baseListener'
+import useRouter, { BASE_ROUTER } from './route/Index'
 
 export default function Plinth() {
-  const children = useChildren()
-
-  const { init, clear } = useListener(children, listeners)
+  const routes = useRouter()
 
   useEffect(() => {
-    init()
     return () => {
-      clear()
+      // 清空基座应用绑定的全局数据函数
+      microApp.clearGlobalDataListener()
     }
-  }, [init, clear])
+  }, [])
 
   return (
     <Router>
-      <div>
-        <Switch>
-          <Route exact path="/" component={routes.route.Base} />
-          <Route path="/mp-list" component={routes.route.MpList} />
-        </Switch>
-      </div>
+      <Switch>
+        {
+          routes.map(item => {
+            const base = item.name === BASE_ROUTER
+            return (
+              <Route
+                exact={base}
+                path={base ? '/' : `/${item.name}`}
+                component={ () =>  <MicroApp {...item} />}
+              />
+            )
+          })
+        }
+      </Switch>
     </Router>
-  );
+  )
 }
