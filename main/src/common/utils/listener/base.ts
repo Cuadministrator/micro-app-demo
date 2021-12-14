@@ -1,55 +1,33 @@
-/**
- * 用于 基座 和 子应用 通信
- */
 import microApp from "@micro-zoe/micro-app"
-
-export type DataType = {
-  type: string
-  value?: Object
-}
-
-export type BaseListener = (data: DataType) => void
+import { LoginUser } from '../../../typings/global'
+import { BaseListener, DataType, getListeners, ListenerMap } from "./common"
 
 export enum BASE_LISTENER {
   LOGIN = 'LOGIN',
   LOGIN_USER = 'LOGIN_USER',
 }
 
-type Mapping = {
-  [key in BASE_LISTENER]: {
-    func: BaseListener,
-    verify?: (data: DataType) => boolean
-  }
-}
-
 const doLogin: BaseListener = () => {
   window.location.href = '/base/login'
 }
 
-const setLoginUser: BaseListener =  (data) => {
+const setLoginUser: BaseListener =  (data: DataType<LoginUser>) => {
   microApp.setGlobalData({
     type: BASE_LISTENER.LOGIN_USER,
     data: data.value,
   })
 }
 
-export const mapping: Mapping = {
+export const map: ListenerMap<typeof BASE_LISTENER> = {
   [BASE_LISTENER.LOGIN]: {
     func: doLogin,
   },
   [BASE_LISTENER.LOGIN_USER]: {
     func: setLoginUser,
-    verify: (data: DataType) => Boolean(data.value),
+    verify: (data: DataType<LoginUser>) => Boolean(data.value),
   },
 }
 
-const listeners = Object.keys(mapping).map((key): BaseListener => {
-  const { func, verify } = mapping[key as BASE_LISTENER]
-  return (data) => (
-    data.type === key && (!verify || (verify && verify(data)))
-      ? func(data)
-      : undefined
-  )
-})
+const listeners = getListeners(map)
 
 export default listeners

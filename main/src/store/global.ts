@@ -10,7 +10,7 @@ class Global {
   @observable loginUser?: LoginUser = undefined
 
   @action
-  changeLoginUser (value: LoginUser) {
+  changeLoginUser (value?: LoginUser) {
     this.loginUser = value
   }
 }

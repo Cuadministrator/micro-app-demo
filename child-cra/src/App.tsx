@@ -5,7 +5,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { Window } from "./typings/global";
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -16,44 +15,8 @@ import { Window } from "./typings/global";
 // making sure things like the back button and bookmarks
 // work properly.
 // @ts-ignore
-console.log(window.__MICRO_APP_BASE_URL__);
-
-const useListener = () => {
-  const dataListener = React.useCallback(
-    (data) => console.warn('dataListener', data),
-    [],
-  )
-  React.useEffect(() => {
-    const microWindow: Window = window
-    if (microWindow && microWindow.microApp) {
-      microWindow.microApp.addDataListener(dataListener)
-    }
-    return () => {
-      if (microWindow && microWindow.microApp) {
-        microWindow.microApp.removeDataListener(dataListener)
-      }
-    }
-  }, [dataListener])
-}
 
 export default function BasicExample() {
-  // @ts-ignore
-  console.log(window.__MICRO_APP_BASE_URL__)
-  const dataListener = React.useCallback(
-    (data) => console.warn('dataListener', data),
-    [],
-  )
-
-  React.useEffect(() => {
-    // @ts-ignore
-    console.warn('addDataListener', window.microApp)
-    // @ts-ignore
-    window.microApp.addDataListener(dataListener)
-    return () => {
-      // @ts-ignore
-      window.microApp.removeDataListener(dataListener)
-    }
-  }, [dataListener])
   return (
     // @ts-ignore
     <Router basename={window.__MICRO_APP_BASE_URL__ || '/'}>

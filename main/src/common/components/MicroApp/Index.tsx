@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 
 import listeners from '../../utils/listener/base'
-import useListener from '../../utils/listener/listener'
+import { useMainListener } from '../../utils/listener/listener'
 
 import { MicroAppProps } from '../../../typings/global'
 
 const MicroApp = (props: MicroAppProps) => {
-  const { init, clear } = useListener(props.name, listeners)
+  const { init, clear } = useMainListener(props.name, listeners)
 
   useEffect(() => {
     init()
