@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+
+import baseListeners from './common/utils/listener/base'
+import globalListeners from './common/utils/listener/global'
+import { useGlobalListener, useSubListener } from './common/utils/listener/listener'
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -17,6 +21,16 @@ import {
 // @ts-ignore
 
 export default function BasicExample() {
+  const { init, clear } = useSubListener(baseListeners)
+  const { init: initGlobal, clear: clearGlobal } = useGlobalListener(globalListeners)
+  useEffect(() => {
+    init()
+    initGlobal()
+    return () => {
+      clear()
+      clearGlobal()
+    }
+  }, [init, initGlobal, clear, clearGlobal])
   return (
     // @ts-ignore
     <Router basename={window.__MICRO_APP_BASE_URL__ || '/'}>

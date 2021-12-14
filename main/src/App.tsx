@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
+import microApp from '@micro-zoe/micro-app'
 
 import MicroApp from './common/components/MicroApp/Index'
 
@@ -18,6 +19,7 @@ export default function Plinth() {
 
   useEffect(() => {
     init()
+    microApp.setData('base', {type: 'LOGIN_USER', value: 123 })
     return () => clear()
   }, [clear, init])
 

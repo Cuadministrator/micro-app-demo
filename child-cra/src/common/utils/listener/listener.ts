@@ -41,6 +41,7 @@ export const useSubListener = (listeners: BaseListener[]) => {
   const micro = useMemo(() => (window as Window)?.microApp, [])
   const baseListener = useCallback(
     (data) => {
+      console.warn('data', data)
       listeners.forEach(listener => {
         listener.apply(null, [data])
       })
