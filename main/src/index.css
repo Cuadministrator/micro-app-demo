@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html,
+body,
+micro-app,
+micro-app-body,
+#root,
+#wrapper {
+  height: 100%;
+}

@@ -9,8 +9,8 @@ const useRouter = () => {
 
   useEffect(() => {
     setRoutes([
-      { name: 'base', url: 'http://localhost:3012/' },
-      { name: 'mp-list', url: 'http://localhost:8000/' },
+      { name: 'background', url: 'http://localhost:8001/' },
+      { name: 'ampPortal', url: 'http://localhost:8000/' },
     ])
   }, [])
 
