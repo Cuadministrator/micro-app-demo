@@ -22,3 +22,19 @@ type LoginUser = {
   departmentId: number | null
   departmentName: string | null
 }
+
+interface ApiResponse<T> {
+  code: number
+  data?: T
+  msg: string
+  originHeaders?: object
+}
+
+declare interface IApiResponse<T> {
+  code: number
+  data: T | null
+  msg: string
+  totalCount?: number
+  pageIndex?: number
+  pageSize?: number
+}

@@ -7,8 +7,7 @@ export enum BASE_LISTENER {
   LOGIN_USER = 'LOGIN_USER',
 }
 
-const doLogin: BaseListener = () => {
-  window.location.href = '/base/login'
+const doLogin: BaseListener = async () => {
 }
 
 const setLoginUser: BaseListener =  (data: DataType<LoginUser>) => {

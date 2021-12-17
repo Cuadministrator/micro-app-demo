@@ -9,6 +9,7 @@ import { Window } from '../../../typings/global'
 export const useMainListener = (appName: string, listeners: BaseListener[]) => {
   const baseListener = useCallback(
     (data) => {
+      console.warn('baseListener 接收消息', data)
       listeners.forEach(listener => {
         listener.apply(null, [data])
       })
@@ -18,6 +19,7 @@ export const useMainListener = (appName: string, listeners: BaseListener[]) => {
 
   const init = useCallback(
     () => {
+      console.warn('baseListener 绑定成功', appName)
       microApp.addDataListener(appName, baseListener, true)
     },
     [appName, baseListener],

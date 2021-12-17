@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-import microApp from '@micro-zoe/micro-app'
 
 import MicroApp from './common/components/MicroApp/Index'
 
@@ -12,6 +11,7 @@ import useRouter, { BASE_ROUTER } from './route/Index'
 
 import { useGlobalListener } from './common/utils/listener/listener'
 import listeners from './common/utils/listener/global'
+import { getCurrentUser } from './common/api/user'
 
 export default function Plinth() {
   const routes = useRouter()
@@ -19,7 +19,9 @@ export default function Plinth() {
 
   useEffect(() => {
     init()
-    microApp.setData('base', {type: 'LOGIN_USER', value: 123 })
+    getCurrentUser().then(res => {
+      console.warn('user', res)
+    })
     return () => clear()
   }, [clear, init])
 
