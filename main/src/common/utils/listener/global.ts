@@ -7,13 +7,13 @@ enum GLOBAL_LISTENER {
 }
 
 const setLoginUser: BaseListener = (data: DataType<LoginUser>) => {
-  store.globalStore.changeLoginUser(data.value)
+  store.globalStore.changeLoginUser(data.data)
 }
 
 const map: ListenerMap<typeof GLOBAL_LISTENER> = {
   [GLOBAL_LISTENER.LOGIN_USER]: {
     func: setLoginUser,
-    verify: (data: DataType<LoginUser>) => Boolean(data.value),
+    verify: (data: DataType<LoginUser>) => Boolean(data.data),
   },
 }
 

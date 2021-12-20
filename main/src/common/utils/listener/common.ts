@@ -1,6 +1,6 @@
 export type DataType<T> = {
   type: string
-  value?: T
+  data?: T
 }
 
 export type BaseListener = (data: DataType<any>) => void

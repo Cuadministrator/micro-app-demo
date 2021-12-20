@@ -11,7 +11,7 @@ import useRouter, { BASE_ROUTER } from './route/Index'
 
 import { useGlobalListener } from './common/utils/listener/listener'
 import listeners from './common/utils/listener/global'
-import { getCurrentUser } from './common/api/user'
+import { doLogin } from './common/utils/listener/base'
 
 export default function Plinth() {
   const routes = useRouter()
@@ -19,11 +19,10 @@ export default function Plinth() {
 
   useEffect(() => {
     init()
-    getCurrentUser().then(res => {
-      console.warn('user', res)
-    })
     return () => clear()
   }, [clear, init])
+
+  useEffect(() => { doLogin() }, [])
 
   return (
     <Router>

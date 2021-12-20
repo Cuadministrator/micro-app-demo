@@ -70,7 +70,7 @@ class Http {
             }
             return Promise.resolve(response)
           }
-        } catch (e) {
+        } catch (e: any) {
           e.code = 500
           return Promise.resolve(response)
         }
@@ -148,7 +148,7 @@ class Http {
       try {
         const res = await this.get<T>(url, config)
         return res
-      } catch (e) {
+      } catch (e: any) {
         if (i === retryTimes - 1) {
           return Promise.reject(new ClientHttpError(e.code, e.msg || e.message))
         }

@@ -24,7 +24,7 @@ export const map: ListenerMap<typeof BASE_LISTENER> = {
   },
   [BASE_LISTENER.LOGIN_USER]: {
     func: setLoginUser,
-    verify: (data: DataType<LoginUser>) => Boolean(data.value),
+    verify: (data: DataType<LoginUser>) => Boolean(data.data),
   },
 }
 

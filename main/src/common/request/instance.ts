@@ -43,12 +43,12 @@ function formatAjaxResponse<T> (res: any): IApiResponse<T> {
   }
 }
 
-const baseURLErp = process.env.REACT_APP_ERP_GATEWAY || ''
+const domain = '//uat-activity.aihuishou.com'
+const baseURLErp = domain  || ''
 
 function createDubaiAxiosInstance (
   baseURL: string, formatResponse: <T>(res: any) => IApiResponse<T>
 ): <T>(config: AxiosRequestConfig) => Promise<IApiResponse<T>> {
-  // dubai 实体
   const erpAxiosInstance = axios.create({
     baseURL: baseURLErp,
     withCredentials: true,
@@ -65,6 +65,12 @@ function createDubaiAxiosInstance (
     return erpAxiosInstance(config).then(
       (res: AxiosResponse): IApiResponse<T> => {
         if (res.status === 200) {
+          if (res.data.code === 401) {
+            const { redirectUrl, appRedirectParameter } = res.data.data
+            window.location.href = redirectUrl + `${encodeURIComponent(
+              `?${appRedirectParameter}=${encodeURIComponent(window.location.href)}`,
+            )}`
+          }
           return formatResponse<T>(res.data)
         } else {
           return {

@@ -9,7 +9,7 @@ const useRouter = () => {
 
   useEffect(() => {
     setRoutes([
-      { name: 'background', url: 'http://localhost:8001/' },
+      // { name: 'background', url: 'http://localhost:8001/' },
       { name: 'ampPortal', url: 'http://localhost:8000/' },
     ])
   }, [])
