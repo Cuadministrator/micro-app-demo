@@ -1,14 +1,9 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
-import { history, Link } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import microApp from '@micro-zoe/micro-app'
 
-const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { BASE_LISTENER } from './utils/listener/base';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -25,59 +20,29 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      const res = await queryCurrentUser();
+      if (res.code === 401 && res.data) {
+        const { redirectUrl, appRedirectParameter } = (res.data as API.UnLoginResult)
+        window.location.href = redirectUrl + `${encodeURIComponent(
+          `?${appRedirectParameter}=${encodeURIComponent(window.location.href)}`,
+        )}`
+        return undefined
+      }
+      return (res.data as API.CurrentUser);
     } catch (error) {
-      history.push(loginPath);
+      return undefined
     }
-    return undefined;
   };
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: {},
-    };
-  }
+  const currentUser = await fetchUserInfo();
+
+  microApp.setGlobalData({
+    type: BASE_LISTENER.LOGIN_USER,
+    data: currentUser,
+  })
+
   return {
     fetchUserInfo,
+    currentUser,
     settings: {},
   };
 }
-
-// ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
-  return {
-    rightContentRender: () => <RightContent />,
-    disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
-    footerRender: () => <Footer />,
-    onPageChange: () => {
-      const { location } = history;
-      // 如果没有登录，重定向到 login
-      // if (!initialState?.currentUser) {
-      //   history.push(loginPath);
-      // }
-    },
-    links: isDev
-      ? [
-          <Link to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
-      : [],
-    menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    ...initialState?.settings,
-  };
-};

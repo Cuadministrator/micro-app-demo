@@ -11,12 +11,12 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  layout: {
-    // https://umijs.org/zh-CN/plugins/plugin-layout
-    locale: true,
-    siderWidth: 208,
-    ...defaultSettings,
-  },
+  // layout: {
+  //   // https://umijs.org/zh-CN/plugins/plugin-layout
+  //   locale: true,
+  //   siderWidth: 208,
+  //   ...defaultSettings,
+  // },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
     // default zh-CN
@@ -34,6 +34,7 @@ export default defineConfig({
   // umi routes: https://umijs.org/docs/routing
   // base: '/background/',
   // publicPath: '/background/',
+  // routes,
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {

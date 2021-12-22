@@ -3,11 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom'
 
 import MicroApp from './common/components/MicroApp/Index'
 
-import useRouter, { BASE_ROUTER } from './route/Index'
+import useRouter from './route/Index'
 
 import { useGlobalListener } from './common/utils/listener/listener'
 import listeners from './common/utils/listener/global'
@@ -29,17 +30,16 @@ export default function Plinth() {
       <Switch>
         {
           routes.map(item => {
-            const base = item.name === BASE_ROUTER
             return (
               <Route
                 key={item.name}
-                exact={base}
-                path={base ? '/' : `/${item.name}`}
-                component={ () =>  <MicroApp {...item} />}
+                path={`/${item.name}`}
+                component={() =>  <MicroApp {...item} />}
               />
             )
           })
         }
+        <Redirect exact from='/' to='/background' />
       </Switch>
     </Router>
   )

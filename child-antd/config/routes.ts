@@ -1,56 +1,50 @@
 ﻿export default [
   {
-    path: '/user',
-    layout: false,
+    path: '/',
+    component: '../layouts/BaseLayout',
     routes: [
       {
-        path: '/user',
+        path: '/background',
+        redirect: '/background/dashboard'
+      },
+      {
+        path: '/background/dashboard',
+        component: './Dashboard/Index',
+        name: '仪表盘',
+        icon: 'dashboard',
+      },
+      {
+        path: '/ampPortal',
+        name: 'AmpPortal',
+        icon: 'dashboard',
+        component: './AmpPortal/Index',
         routes: [
           {
-            name: 'login',
-            path: '/user/login',
-            component: './user/Login',
+            name: '爱回收小程序',
+            routes: [
+              {
+                path: '/ampPortal/amp/mp-list',
+                name: '列表',
+              }
+            ],
+          },
+          {
+            name: '回收晒单',
+            routes: [
+              {
+                path: '/ampPortal/share-order/manage',
+                name: '奖品码管理',
+              },
+
+              {
+                path: '/ampPortal/share-order/exchange',
+                name: '奖品核销',
+              }
+            ],
           },
         ],
       },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
-    path: '/',
-    redirect: '/welcome',
+    ]
   },
   {
     component: './404',

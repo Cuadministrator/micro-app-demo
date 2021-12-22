@@ -10,11 +10,11 @@ const Settings: LayoutSettings & {
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
-  fixSiderbar: true,
+  fixSiderbar: false,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '爱回收',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: 'https://sr.aihuishou.com/c2b/zy-fe/public/micro-app/logo.svg',
   iconfontUrl: '',
 };
 

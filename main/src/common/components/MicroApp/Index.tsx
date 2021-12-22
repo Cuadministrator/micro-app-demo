@@ -16,7 +16,9 @@ const MicroApp = (props: MicroAppProps) => {
   }, [clear, init])
 
   return (
-    <micro-app {...props}></micro-app>
+    <>
+      <micro-app {...props}></micro-app>
+    </>
   )
 }
 
