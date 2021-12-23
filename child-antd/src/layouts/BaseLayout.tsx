@@ -3,15 +3,18 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
+import { useMemo, useCallback } from 'react'
 import ProLayout from '@ant-design/pro-layout';
 //  import React, { useEffect, useCallback } from 'react';
-import { Link } from 'umi';
+import { Link, history } from 'umi';
 //  import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/RightContent';
 //  import { BASE_LISTENER, getListener } from '@/utils/listener';
+import microApp from '@micro-zoe/micro-app'
+
+import microAppConfigs from '../pages/config'
 
 import logo from '../assets/logo.svg';
-import { useCallback } from '@umijs/renderer-react/node_modules/@types/react';
 /**
  * use Authorized check all menu item
  */
@@ -27,9 +30,25 @@ const footerRender = (_: any) => <></>;
 const BasicLayout = (props: any) => {
   const { children, settings } = props;
 
+  const microAppNames = useMemo(() =>
+    Object.values(microAppConfigs).map(item => item.name),
+    [],
+  )
+
   const onMenuItemPress = useCallback((path) => {
-    console.warn(path)
-    window.location.href = path
+    const base = path.split('/')[1]
+    const pathname = window.location.pathname
+    if (
+      pathname.indexOf(base) > -1 &&
+      microAppNames.includes(base)
+    ) {
+      microApp.setData(base, {
+        type: 'ROUTE_PUSH',
+        data: path,
+      })
+    } else {
+      history.push(path)
+    }
   }, [])
 
   return (

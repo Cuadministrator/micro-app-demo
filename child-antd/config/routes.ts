@@ -4,6 +4,10 @@
     component: '../layouts/BaseLayout',
     routes: [
       {
+        path: '/',
+        redirect: '/background/dashboard'
+      },
+      {
         path: '/background',
         redirect: '/background/dashboard'
       },
@@ -35,7 +39,6 @@
                 path: '/ampPortal/share-order/manage',
                 name: '奖品码管理',
               },
-
               {
                 path: '/ampPortal/share-order/exchange',
                 name: '奖品核销',
